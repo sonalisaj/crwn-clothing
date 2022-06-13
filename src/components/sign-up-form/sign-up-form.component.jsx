@@ -1,31 +1,33 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
+
+import FormInput from '../form-input/form-input.component';
+import Button from '../button/button.component';
+
 import {
-    createAuthUserWithEmailAndPassword,
-    createUserDocumentFromAuth
-} from '../utils/firebase/firebase.utils';
-import FormInput from '../components/form-input/form-input.component';
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+} from '../../utils/firebase/firebase.utils';
+
 import './sign-up-form.styles.scss';
-import Button from '../components/button/button.component';
+
 const defaultFormFields = {
-    displayName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-}
+  displayName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 
 const SignUpForm = () => {
-    const [formFields, setFormFields] = useState(defaultFormFields);
-    const { displayName, email, password, confirmPassword } = formFields;
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  const { displayName, email, password, confirmPassword } = formFields;
 
-    console.log("\n---formFiels---", formFields);
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
+  };
 
-    const resetFormFields = () => {
-        setFormFields(defaultFormFields);
-    }
-
-   const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
+    console.log("\n-----handleSubmit------");
     if (password !== confirmPassword) {
       alert('passwords do not match');
       return;
@@ -48,16 +50,18 @@ const SignUpForm = () => {
     }
   };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormFields({ ...formFields, [name]: value });
-    }
+  const handleChange = (event) => {
+    console.log("\n----in handle change----");
+    const { name, value } = event.target;
+
+    setFormFields({ ...formFields, [name]: value });
+  };
 
   return (
-      <div className='sign-up-container'>
-        <h2>Don't have an Account?</h2>
-        <span>SignUp with your email & password</span>
-        <form onSubmit={handleSubmit}>
+    <div className='sign-up-container'>
+      <h2>Don't have an account?</h2>
+      <span>Sign up with your email and password</span>
+      <form onSubmit={handleSubmit}>
         <FormInput
           label='Display Name'
           type='text'
@@ -93,13 +97,10 @@ const SignUpForm = () => {
           name='confirmPassword'
           value={confirmPassword}
         />
-
-
-          <Button type='submit'>Sign Up</Button>
-        </form>
+        <Button type='submit'>Sign Up</Button>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default SignUpForm
-
+export default SignUpForm;
